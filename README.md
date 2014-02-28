@@ -19,7 +19,7 @@ Available domains will be _green_ and go to stdout.<br>
 Non-available domains will be _red_ and go to stderr.
 
 ## Examples
-Check a domain:
+Check domain availability:
 ```bash
 ./tld_checker.sh doge
 ```
