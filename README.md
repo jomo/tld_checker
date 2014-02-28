@@ -1,26 +1,30 @@
 # TLD checker
-check all Top-Level-Domains for specific domain availability
+Check a domain for availability on every Top-Level-Domain.
 
 ![terminal-screenshot](http://i.imgur.com/L2G5POX.png)
 
+This downloads a [list of TLDs](https://data.iana.org/TLD/tlds-alpha-by-domain.txt) from IANA, so it should always be up to date :+1:.
+
+Note: This will report a domain as available when your (specified) DNS server reports that the domain does not exist
+([NXDOMAIN](https://tools.ietf.org/html/rfc2308#section-2.1)).
+
+
 ## Usage
 
-```
-./tld\_checker \<domain\> [DNS server]
+```bash
+./tld_checker.sh <domain> [DNS server]
 ```
 
-available domains will be green on stdout, non-available domains will be red on stderr
+Available domains will be _green_ and go to stdout.<br>
+Non-available domains will be _red_ and go to stderr.
 
 ## Examples
-Check a domain
-
+Check a domain:
+```bash
+./tld_checker.sh doge
 ```
-./tld\_checker doge
-```
 
-Write available domains to file
-(`&2/dev/null` is used to _not_ print non-available domains)
-
-```
-./tld\_checker doge > available.txt &2>/dev/null
+Write only available domains to file:
+```bash
+./tld_checker.sh doge > available.txt &2>/dev/null
 ```
