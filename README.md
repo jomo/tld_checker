@@ -26,5 +26,5 @@ Check domain availability:
 
 Write only available domains to file:
 ```bash
-./tld_checker.sh doge > available.txt &2>/dev/null
+./tld_checker.sh doge > available.txt 2>/dev/null
 ```
