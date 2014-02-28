@@ -7,24 +7,29 @@ if [ -z "$1" ]; then
   exit 1
 fi
 if [ ! -z "$2" ]; then
-  echo "#Using DNS server '$2'" 2>&2
+  echo "# Using DNS server '$2'" 2>&2
 fi
 tld_url="https://data.iana.org/TLD/tlds-alpha-by-domain.txt"
-tlds="$(curl "$tld_url" 2>/dev/null | grep -v "^#" || (echo "Error while downloading TLDs." && exit 1))"
+echo "# Downloading TLD list from $tld_url ..." >&2
+tlds="$(curl --progress-bar "$tld_url" | grep -v "^#")" || (echo "Error while downloading TLDs." && exit 1)
 count="$(echo "$tlds" | wc -l)"
+export tld_tmpfile="/tmp/tld_counter"
 
-trap exit SIGINT SIGTERM # break out of loop
-
-echo "#Listing available '$1' domains for $count TLDs" >&2
+trap "echo exit; rm -f "$tld_tmpfile"; exit" SIGINT SIGTERM # break out of loop
+echo -n > "$tld_tmpfile"
+echo "# Getting available '$1' domains for $count TLDs ..." >&2
 for tld in $(echo $tlds); do
-  domain="${1}.${tld}"
-  if (host "$domain" $2 | grep -q "NXDOMAIN"); then
-    tput setf 2
-    echo "$domain"
+  (domain="${1}.${tld}"
+  if (host "$domain" $2 | grep -q "3(NXDOMAIN)"); then
+    echo "$(tput setf 2)${domain}$(tput sgr0)"
   else
-    tput setf 4
-    echo "$domain" >&2
+    echo "$(tput setf 4)${domain}$(tput sgr0)" >&2
   fi
-  tput sgr0
+  echo -n "." >> "$tld_tmpfile") &
 done
-echo "#done" >&2
+
+while [ "$(wc -m $tld_tmpfile | cut -d " " -f 1)" -lt "$count" ]; do
+  sleep 0.1
+done
+rm -f "$tld_tmpfile"
+echo "# done" >&2
