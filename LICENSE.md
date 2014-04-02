@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 
-Copyright (c) JonApps 2014
+Copyright (c) jomo 2014
 <hr>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
