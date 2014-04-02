@@ -1,6 +1,6 @@
 #!/bin/bash
 # tld_checker.sh
-# Made by JonApps
+# Made by jomo
 
 if [ -z "$1" ]; then
   echo "Usage: $0 <domain-name> [DNS server]" >&2
