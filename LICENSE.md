@@ -1,7 +1,6 @@
 # The MIT License (MIT)
 
-Copyright (c) jomo 2014
-<hr>
+Copyright (c) jomo
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
