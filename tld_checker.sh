@@ -9,10 +9,11 @@ fi
 dns="$2"
 if [ -n "$dns" ]; then
   echo "# Using DNS server '$dns'" >&2
+  dns="@$dns"
 fi
 
 function check_tld {
-  if (host "$1" $dns | fgrep -q "3(NXDOMAIN)"); then
+  if [ -z "$(dig +short SOA "$1" $dns)" ]; then
     echo "$(tput setf 2)${1}$(tput sgr0)"
   else
     echo "$(tput setf 4)${1}$(tput sgr0)" >&2
@@ -25,15 +26,14 @@ tlds="$(curl --progress-bar "$tld_url" | grep -v "^#")" || (echo "Error while do
 count="$(echo "$tlds" | wc -l)"
 
 echo "# Getting available '$1' domains for $count TLDs ..." >&2
-for tld in $tlds; do
-  check_tld "${1}.${tld}" &
-  sleep 0.005
+
+workers=32
+for i in $(seq $((workers-1)) 0); do
+  for tld in $(echo "$tlds" | awk "(NR+$i) % $workers == 0"); do
+    check_tld "${1}.${tld}"
+  done &
 done
 
 # Wait for everything to be done
-while fg 2>/dev/null; do
-  true
-done
-
-sleep 1 # idk why this is required, but it is.
+wait
 echo "# done" >&2
