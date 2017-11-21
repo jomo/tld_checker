@@ -28,7 +28,7 @@ count="$(echo "$tlds" | wc -l)"
 echo "# Getting available '$1' domains for $count TLDs ..." >&2
 
 workers=32
-for i in $(seq $((workers-1)) 0); do
+for ((i=$((workers-1)); i > 0; i--)); do
   for tld in $(echo "$tlds" | awk "(NR+$i) % $workers == 0"); do
     check_tld "${1}.${tld}"
   done &
