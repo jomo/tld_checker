@@ -13,10 +13,10 @@ if [ -n "$dns" ]; then
 fi
 
 function check_tld {
-  if [ -z "$(dig +short SOA "$1" $dns)" ]; then
-    echo "$(tput setf 2)${1}$(tput sgr0)"
+  if [ -z "$(dig +short SOA "$1" "$dns")" ]; then
+    echo "$(tput setaf 2)${1}$(tput sgr0)"
   else
-    echo "$(tput setf 4)${1}$(tput sgr0)" >&2
+    echo "$(tput setaf 4)${1}$(tput sgr0)" >&2
   fi
 }
 
