@@ -1,7 +1,7 @@
 # TLD checker
 Check domain name for availability on every Top-Level-Domain.
 
-[![asciicast](https://asciinema.org/a/24219.png)](https://asciinema.org/a/24219)
+[![asciicast](asciicast.svg)](https://asciinema.org/a/24219)
 
 green means domain available :+1:  
 red means domain not available :-1:
